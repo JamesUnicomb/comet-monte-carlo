@@ -7,5 +7,5 @@ docker build --progress=plain --no-cache . -t  myubuntu
 
 ## Running Example Files
 ```
-docker run -it myubuntu /bin/bash -c 'cd /GMAT/R2022a/api/ && python3 Ex_R2020a_FindTheMoon.py'
+docker run -it myubuntu /bin/python3 propagation_loop.py
 ```

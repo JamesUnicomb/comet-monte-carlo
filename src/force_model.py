@@ -1,9 +1,14 @@
+from datetime import datetime
 from load_gmat import gmat
+from get_data import get_space_weather
+
+epoch = datetime(2024, 4, 5, 4, 14, 46, 144996)
+epochstr = epoch.strftime("%d %b %Y %H:%M:%S.%f")[:-3]
 
 # Spacecraft configuration preliminaries
 earthorb = gmat.Construct("Spacecraft", "EarthOrbiter")
 earthorb.SetField("DateFormat", "UTCGregorian")
-earthorb.SetField("Epoch", "20 Jul 2020 12:00:00.000")
+earthorb.SetField("Epoch", epochstr)
 
 earthorb.SetField("CoordinateSystem", "EarthMJ2000Eq")
 earthorb.SetField("DisplayStateType", "Cartesian")
@@ -39,14 +44,18 @@ moongrav = gmat.Construct("PointMassForce", "MoonGrav")
 moongrav.SetField("BodyName", "Luna")
 sungrav = gmat.Construct("PointMassForce", "SunGrav")
 sungrav.SetField("BodyName", "Sun")
+jupitergrav = gmat.Construct("PointMassForce", "JupiterGrav")
+jupitergrav.SetField("BodyName", "Jupiter")
 
 # Drag using Jacchia-Roberts
+# get_space_weather()
 jrdrag = gmat.Construct("DragForce", "JRDrag")
 jrdrag.SetField("AtmosphereModel", "JacchiaRoberts")
 
 # Build and set the atmosphere for the model
 atmos = gmat.Construct("JacchiaRoberts", "Atmos")
 jrdrag.SetReference(atmos)
+
 
 # Solar Radiation Pressure
 srp = gmat.Construct("SolarRadiationPressure", "SRP")
@@ -55,6 +64,7 @@ srp = gmat.Construct("SolarRadiationPressure", "SRP")
 fm.AddForce(earthgrav)
 fm.AddForce(moongrav)
 fm.AddForce(sungrav)
+fm.AddForce(jupitergrav)
 fm.AddForce(jrdrag)
 fm.AddForce(srp)
 

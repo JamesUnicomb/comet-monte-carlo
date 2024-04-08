@@ -10,4 +10,7 @@ RUN tar -xvzf gmat-ubuntu-x64-R2022a.tar.gz
 RUN cd GMAT/R2022a/api && python3 BuildApiStartupFile.py
 RUN sed -i "s/<TopLevelGMATFolder>/\/GMAT\/R2022a/g" /GMAT/R2022a/api/load_gmat.py
 
+COPY requirements.txt ./
+RUN python3 -m pip install -r requirements.txt
+
 COPY src/* ./
